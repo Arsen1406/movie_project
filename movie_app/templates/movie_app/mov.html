@@ -9,8 +9,7 @@
     {% for mov in movies %}
         <li><a href="{{ mov.get_url }}">{{ mov.name }}</a>,
             Рейтинг - {{ mov.rating }}%,
-            Год выпуска - {{ mov.year|default:"Неизвестен" }},
-            Бюджет - {{ mov.budget }} {{ mov.currency }}
+            Год выпуска - {{ mov.year|default:"Неизвестен" }}
         </li>
     {% endfor %}
         <h3>Максимальный рейтинг {{ agg.rating__max }}%</h3>

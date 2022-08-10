@@ -1,0 +1,22 @@
+{% extends 'movie_app/base.html' %}
+
+{% block title %} Информация о режисёре {{ director.last_name }} {{ director.first_name }} {% endblock %}
+
+{% block content %}
+    <h2>Список всех режисёров</h2>
+
+    <ul>
+        <h3> Имя - {{ director.last_name }} </h3>
+        <h3> Фамилия - {{ director.first_name }} </h3>
+        <h3> Почта - {{ director.director_mail }} </h3>
+</ul>
+
+
+<hr>
+<h2>Список фильмов</h2>
+<ul>
+        {% for movi in director.movie_set.all %}
+    <li> <a href="{{ movi.get_url }}">{{ movi }} </a></li>
+        {% endfor %}
+</ul>
+{% endblock %}

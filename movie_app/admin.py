@@ -1,9 +1,16 @@
 from django.contrib import admin, messages
-from .models import Movie, Director  # Импортируем нашу модель
+from .models import Movie, Director, Actor, DressingRoom  # Импортируем нашу модель
 from django.db.models import QuerySet
 
 
 admin.site.register(Director)
+admin.site.register(Actor)
+#admin.site.register(DressingRoom)
+
+@admin.register(DressingRoom)
+class DressingRoom(admin.ModelAdmin):
+    list_display = ['floor', 'number', 'actor']
+
 
 class RatingFilter(admin.SimpleListFilter):  # делаем фильтр по рейтингу
     title = 'Фильтр по рейтингу'  # даем название в админке
@@ -32,9 +39,9 @@ class RatingFilter(admin.SimpleListFilter):  # делаем фильтр по р
 class MovieAdmin(admin.ModelAdmin):
     #exclude = ['slug']
     prepopulated_fields = {'slug': ('name', )}
-    list_display = ['id', 'name', 'rating', 'year', 'rating_status'
+    list_display = ['name', 'rating', 'year', 'director', 'rating_status'
                     ]  # Назначаем параметры которые отображаются в админке
-    list_editable = ['name', 'rating', 'year'
+    list_editable = ['rating', 'year', 'director',
                      ]  # Указываем значения, которые можно редактировать(Первое значение выступает в роли ссылки, его не редактируем)
     ordering = ['-rating']  # Сортировка по значению( минус это реверс)
     list_per_page = 5  # По сколько объектов отобразится на одной странице
@@ -42,6 +49,7 @@ class MovieAdmin(admin.ModelAdmin):
     search_fields = ['name__istartswith', 'rating']  # делаем поисковую строку в админке
     # istartswith - i убирает чувствительность к регистру, startswith, начинает поиск только в начальных символах
     list_filter = ['name', 'currency', RatingFilter]
+    filter_horizontal = ['actors']
 
     @admin.display(ordering='rating', description='Статус')  # ordering='rating', чтобы сортировать по значению rating
     # description='Статус' именует название столбца
